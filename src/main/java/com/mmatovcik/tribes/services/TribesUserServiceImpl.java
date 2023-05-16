@@ -5,20 +5,27 @@ import com.mmatovcik.tribes.exceptions.NotUniqueException;
 import com.mmatovcik.tribes.models.TribesUser;
 import com.mmatovcik.tribes.repositories.TribesUserRepository;
 import java.util.Optional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TribesUserServiceImpl implements TribesUserService {
   private final TribesUserRepository userRepository;
+  private final KingdomService kingdomService;
 
   @Override
   public TribesUser register(TribesUser userToRegister) {
     if (loadUserFromDatabaseByUsername(userToRegister.getUsername()).isPresent()) {
       throw new NotUniqueException("Username is registered already.");
     }
-    TribesUser registeredUser = userRepository.insert(userToRegister);
+
+    userToRegister.setId(new ObjectId().toString());
+    TribesUser registeredUser = userRepository.save(userToRegister);
+    registeredUser.setKingdom(kingdomService.createNewKingdom(registeredUser));
+    userRepository.save(registeredUser);
+
     return registeredUser;
   }
 

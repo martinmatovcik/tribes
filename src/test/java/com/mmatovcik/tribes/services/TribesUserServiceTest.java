@@ -24,15 +24,32 @@ public class TribesUserServiceTest {
   @MockBean TribesUserRepository userRepository;
 
   @Test
+  public void register_successful() {
+    // Given
+    String username = "username";
+    String password = "password";
+    Kingdom kingdom = new Kingdom();
+    TribesUser userToRegister = new TribesUser(username, password, kingdom);
+    TribesUser expectedUser = new TribesUser("1", username, password, kingdom);
+
+    // When
+    TribesUser actualUser = userService.register(userToRegister);
+
+    // Then
+    assertEquals(expectedUser, actualUser);
+  }
+
+  @Test
   public void register_throwsNotUniqueException() {
-    //Given
+    // Given
     TribesUser userToRegister = new TribesUser();
     userToRegister.setUsername("username");
-    when(userService.loadUserFromDatabaseByUsername(any())).thenReturn(Optional.of(new TribesUser()));
+    when(userService.loadUserFromDatabaseByUsername(any()))
+        .thenReturn(Optional.of(new TribesUser()));
 
-    //When
-    Exception exception = assertThrows(NotUniqueException.class, () -> userService.register(
-        userToRegister));
+    // When
+    Exception exception =
+        assertThrows(NotUniqueException.class, () -> userService.register(userToRegister));
 
     //Then
     assertTrue(exception.getMessage().contains("Username is registered already."));
