@@ -1,0 +1,14 @@
+package com.mmatovcik.tribes.exceptions;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+@Getter
+public class NotFoundException extends RuntimeException {
+  private final HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+
+  public NotFoundException(String errorMessage) {
+    super(errorMessage);
+  }
+}
