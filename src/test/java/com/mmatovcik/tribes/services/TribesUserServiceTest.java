@@ -29,7 +29,8 @@ public class TribesUserServiceTest {
     String username = "username";
     String password = "password";
     TribesUser userToRegister = new TribesUser(username, password);
-    TribesUser expectedUser = new TribesUser("1", username, password);
+    TribesUser expectedUser = new TribesUser("someId", username, password);
+    when(userRepository.save(any())).thenReturn(expectedUser);
 
     // When
     TribesUser actualUser = userService.register(userToRegister);
