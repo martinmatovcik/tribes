@@ -17,14 +17,14 @@ public class TribesUserServiceImpl implements TribesUserService {
   @Override
   public TribesUser register(TribesUser userToRegister) {
     if (loadUserFromDatabaseByUsername(userToRegister.getUsername()).isPresent()) {
-      throw new NotUniqueException("Username is registered already.");
+      throw new NotUniqueException("Username is already registered.");
     }
 
     TribesUser registeredUser =
-        new TribesUser(userToRegister.getUsername(), userToRegister.getPassword());
-    TribesUser temp = userRepository.save(registeredUser);
+        userRepository.save(
+            new TribesUser(userToRegister.getUsername(), userToRegister.getPassword()));
     kingdomService.createNewKingdom(registeredUser);
-    return temp;
+    return registeredUser;
   }
 
   @Override
