@@ -4,5 +4,5 @@ import com.mmatovcik.tribes.models.Kingdom;
 import com.mmatovcik.tribes.models.TribesUser;
 
 public interface KingdomService {
-  Kingdom createNewKingdom(TribesUser user);
+  Kingdom createKingdom(TribesUser user, String kingdomName);
 }
