@@ -5,7 +5,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document(collection = "kingdoms")  //TODO: Does this need to be @Document?
+@Document(collection = "kingdoms")
 public class Kingdom {
   @Id private String id;
+  private TribesUser user;
+
+  public Kingdom(TribesUser user) {
+    this.user = user;
+  }
 }

@@ -6,7 +6,6 @@ import com.mmatovcik.tribes.models.TribesUser;
 import com.mmatovcik.tribes.repositories.TribesUserRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,12 +20,11 @@ public class TribesUserServiceImpl implements TribesUserService {
       throw new NotUniqueException("Username is registered already.");
     }
 
-    userToRegister.setId(new ObjectId().toString());
-    TribesUser registeredUser = userRepository.save(userToRegister);
-    registeredUser.setKingdom(kingdomService.createNewKingdom(registeredUser));
-    userRepository.save(registeredUser);
-
-    return registeredUser;
+    TribesUser registeredUser =
+        new TribesUser(userToRegister.getUsername(), userToRegister.getPassword());
+    TribesUser temp = userRepository.save(registeredUser);
+    kingdomService.createNewKingdom(registeredUser);
+    return temp;
   }
 
   @Override

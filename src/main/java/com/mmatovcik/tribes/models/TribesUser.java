@@ -18,11 +18,9 @@ public class TribesUser {
   private String username;
 
   private String password;
-  private Kingdom kingdom;
 
-  public TribesUser(String username, String password, Kingdom kingdom) {
+  public TribesUser(String username, String password) {
     this.username = username;
     this.password = password;
-    this.kingdom = kingdom;
   }
 }

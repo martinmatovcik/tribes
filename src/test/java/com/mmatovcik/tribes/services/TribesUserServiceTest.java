@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import com.mmatovcik.tribes.exceptions.NotFoundException;
 import com.mmatovcik.tribes.exceptions.NotUniqueException;
-import com.mmatovcik.tribes.models.Kingdom;
 import com.mmatovcik.tribes.models.TribesUser;
 import com.mmatovcik.tribes.repositories.TribesUserRepository;
 import java.util.Optional;
@@ -22,15 +21,15 @@ public class TribesUserServiceTest {
 
   @Autowired TribesUserServiceImpl userService;
   @MockBean TribesUserRepository userRepository;
+  @MockBean KingdomServiceImpl kingdomService;
 
   @Test
-  public void register_successful() {
+  public void register_successful() {  //FIXME
     // Given
     String username = "username";
     String password = "password";
-    Kingdom kingdom = new Kingdom();
-    TribesUser userToRegister = new TribesUser(username, password, kingdom);
-    TribesUser expectedUser = new TribesUser("1", username, password, kingdom);
+    TribesUser userToRegister = new TribesUser(username, password);
+    TribesUser expectedUser = new TribesUser("1", username, password);
 
     // When
     TribesUser actualUser = userService.register(userToRegister);
@@ -60,7 +59,7 @@ public class TribesUserServiceTest {
   public void loadUserByUsername_successful() {
     // Given
     String username = "username";
-    TribesUser expectedUser = new TribesUser(username, "password", new Kingdom());
+    TribesUser expectedUser = new TribesUser(username, "password");
     when(userService.loadUserFromDatabaseByUsername(username)).thenReturn(Optional.of(expectedUser));
 
     // When
