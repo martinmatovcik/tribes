@@ -31,9 +31,8 @@ public class TribesUserServiceTest {
     TribesUser userToRegister = new TribesUser(username, password);
     TribesUser expectedUser = new TribesUser("someId", username, password);
     when(userRepository.save(any())).thenReturn(expectedUser);
-
     // When
-    TribesUser actualUser = userService.register(userToRegister);
+    TribesUser actualUser = userService.register(userToRegister, "kingdom");
 
     // Then
     assertEquals(expectedUser, actualUser);
@@ -44,54 +43,40 @@ public class TribesUserServiceTest {
     // Given
     TribesUser userToRegister = new TribesUser();
     userToRegister.setUsername("username");
-    when(userService.loadUserFromDatabaseByUsername(any()))
+    when(userRepository.findByUsername(any()))
         .thenReturn(Optional.of(new TribesUser()));
 
     // When
     Exception exception =
-        assertThrows(NotUniqueException.class, () -> userService.register(userToRegister));
+        assertThrows(NotUniqueException.class, () -> userService.register(userToRegister, "kingdom"));
 
     //Then
-    assertTrue(exception.getMessage().contains("Username is registered already."));
+    assertTrue(exception.getMessage().contains("Username is already registered."));
 
   }
 
   @Test
-  public void loadUserByUsername_successful() {
+  public void findUserByUsername_successful() {
     // Given
     String username = "username";
     TribesUser expectedUser = new TribesUser(username, "password");
-    when(userService.loadUserFromDatabaseByUsername(username)).thenReturn(Optional.of(expectedUser));
+    when(userRepository.findByUsername(username)).thenReturn(Optional.of(expectedUser));
 
     // When
-    TribesUser actualUser = userService.loadUserByUsername(username);
+    TribesUser actualUser = userService.findUserByUsername(username);
 
     // Then
     assertEquals(expectedUser, actualUser);
   }
 
   @Test
-  public void loadUserByUsername_throwsNotFoundException() {
+  public void findUserByUsername_throwsNotFoundException() {
     // Given
 
     //When
-    Exception exception = assertThrows(NotFoundException.class, () -> userService.loadUserByUsername("username"));
+    Exception exception = assertThrows(NotFoundException.class, () -> userService.findUserByUsername("username"));
 
     //Then
     assertTrue(exception.getMessage().contains("Username does not exists"));
-  }
-
-  @Test
-  public void loadUserFromDatabase_successful() {
-    //Given
-    String username = "username";
-    TribesUser expectedUser = new TribesUser();
-    when(userRepository.findByUsername(username)).thenReturn(Optional.of(expectedUser));
-
-    //When
-    Optional<TribesUser> actualUserOptional = userService.loadUserFromDatabaseByUsername(username);
-
-    //Then
-    assertEquals(Optional.of(expectedUser), actualUserOptional);
   }
 }

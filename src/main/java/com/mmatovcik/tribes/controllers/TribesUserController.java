@@ -1,5 +1,6 @@
 package com.mmatovcik.tribes.controllers;
 
+import com.mmatovcik.tribes.dtos.LoginRequestDto;
 import com.mmatovcik.tribes.dtos.RegistrationRequestDto;
 import com.mmatovcik.tribes.dtos.ResponseDto;
 import com.mmatovcik.tribes.services.TribesUserService;
@@ -19,8 +20,13 @@ public class TribesUserController {
 
   @PostMapping("/register")
   public ResponseEntity<ResponseDto> register(@RequestBody RegistrationRequestDto requestDto) {
-    userService.register(requestDto.toUser());
-
+    userService.register(requestDto.toUser(), requestDto.getKingdomName());
     return new ResponseEntity<>(new ResponseDto("Registration was successful!"), HttpStatus.CREATED);
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<ResponseDto> login(@RequestBody LoginRequestDto requestDto) {
+    userService.login(requestDto.getUsername(), requestDto.getPassword());
+    return new ResponseEntity<>(new ResponseDto("Login was successful!"), HttpStatus.OK);
   }
 }

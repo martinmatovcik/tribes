@@ -1,11 +1,11 @@
 package com.mmatovcik.tribes.services;
 
 import com.mmatovcik.tribes.models.TribesUser;
-import java.util.Optional;
 
 public interface TribesUserService {
-  TribesUser register(TribesUser userToRegister);
+  TribesUser register(TribesUser userToRegister, String kingdomName);
 
-  TribesUser loadUserByUsername(String username);
-  Optional<TribesUser> loadUserFromDatabaseByUsername(String username);
+  TribesUser findUserByUsername(String username);
+
+  String login(String username, String password);
 }
