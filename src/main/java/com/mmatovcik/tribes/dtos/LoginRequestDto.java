@@ -1,5 +1,6 @@
 package com.mmatovcik.tribes.dtos;
 
+import com.mmatovcik.tribes.models.Role;
 import com.mmatovcik.tribes.models.TribesUser;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -15,9 +16,6 @@ public class LoginRequestDto {
   private String password;
 
   public TribesUser toUser() {
-    TribesUser user = new TribesUser();
-    user.setUsername(this.username);
-    user.setPassword(this.password);
-    return user;
+    return new TribesUser(this.username, this.password, Role.USER);
   }
 }
