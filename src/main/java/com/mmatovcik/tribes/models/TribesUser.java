@@ -34,6 +34,11 @@ public class TribesUser implements UserDetails {
     this.username = username;
     this.password = password;
   }
+  public TribesUser(String username, String password, Role role){
+    this.username = username;
+    this.password = password;
+    this.role = role;
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
