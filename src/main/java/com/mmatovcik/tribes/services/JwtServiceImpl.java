@@ -1,5 +1,6 @@
 package com.mmatovcik.tribes.services;
 
+import com.mmatovcik.tribes.models.TribesUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -10,6 +11,7 @@ import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,6 +43,11 @@ public class JwtServiceImpl implements JwtService {
         .setExpiration(convertLocalDateTimeToDate(LocalDateTime.now().plusMinutes(60)))
         .signWith(getSigningKey(), SignatureAlgorithm.HS256)
         .compact();
+  }
+
+  @Override
+  public String generateToken(TribesUser user) {
+    return generateToken(new HashMap<>(), user);
   }
 
   @Override
