@@ -7,13 +7,10 @@ import com.mmatovcik.tribes.models.TribesUser;
 import com.mmatovcik.tribes.repositories.TribesUserRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class TribesUserServiceImpl implements TribesUserService {
   private final TribesUserRepository userRepository;
   private final KingdomService kingdomService;
+
   private final AuthenticationManager authenticationManager;
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
@@ -81,16 +79,5 @@ public class TribesUserServiceImpl implements TribesUserService {
 
   private Optional<TribesUser> loadOptionalOfUserByUsername(String username) {
     return userRepository.findByUsername(username);
-  }
-
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
-      throws Exception {
-    return configuration.getAuthenticationManager();
-  }
-
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
   }
 }
