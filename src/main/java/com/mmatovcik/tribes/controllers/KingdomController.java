@@ -4,8 +4,8 @@ import com.mmatovcik.tribes.dtos.KingdomDto;
 import com.mmatovcik.tribes.exceptions.NoContentException;
 import com.mmatovcik.tribes.models.Kingdom;
 import com.mmatovcik.tribes.services.KingdomService;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +27,7 @@ public class KingdomController {
       throw new NoContentException("No content.");
     }
 
-    List<KingdomDto> output = new ArrayList<>();
-
-    for (Kingdom kingdom : kingdoms) {
-      output.add(kingdom.toDto());
-    }
+    List<KingdomDto> output = kingdoms.stream().map(Kingdom::toDto).collect(Collectors.toList());
 
     return new ResponseEntity<>(output, HttpStatus.OK);
   }
