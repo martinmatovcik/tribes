@@ -18,4 +18,8 @@ public class TribesExceptionHandler {
   public ResponseEntity<ErrorDto> handleNotUnique(NotUniqueException e) {
     return new ResponseEntity<>(new ErrorDto(409, List.of(e.getMessage())), e.getHttpStatus());
   }
+  @ExceptionHandler(NoContentException.class)
+  public ResponseEntity<ErrorDto> handleNoContent(NoContentException e) {
+    return new ResponseEntity<>(new ErrorDto(204, List.of(e.getMessage())), e.getHttpStatus());
+  }
 }

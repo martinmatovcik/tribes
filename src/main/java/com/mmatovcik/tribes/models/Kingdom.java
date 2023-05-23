@@ -1,5 +1,6 @@
 package com.mmatovcik.tribes.models;
 
+import com.mmatovcik.tribes.dtos.KingdomDto;
 import java.util.LinkedList;
 import java.util.List;
 import lombok.Data;
@@ -22,5 +23,10 @@ public class Kingdom {
     this.user = user;
     this.name = name;
     this.location = location;
+  }
+
+  public KingdomDto toDto() {
+    return new KingdomDto(
+        this.id, this.user, this.name, this.troops, this.resources, this.location);
   }
 }
