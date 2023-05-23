@@ -2,7 +2,6 @@ package com.mmatovcik.tribes.configurations;
 
 import com.mmatovcik.tribes.models.TribesUser;
 import com.mmatovcik.tribes.services.JwtService;
-import com.mmatovcik.tribes.services.TribesUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -20,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
   private final JwtService jwtService;
-  private final TribesUserService userService;
+  private final UserDetailsService userDetailsService;
 
   @Override
   protected void doFilterInternal(
@@ -38,7 +38,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     jwt = authHeader.substring(7);
     username = jwtService.extractUsername(jwt);
     if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-      TribesUser user = userService.findUserByUsername(username);
+      TribesUser user = (TribesUser) userDetailsService.loadUserByUsername(username);
       if (jwtService.isTokenValidForUsername(jwt, username)) {
         UsernamePasswordAuthenticationToken authToken =
             new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
