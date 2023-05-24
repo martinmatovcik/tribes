@@ -21,13 +21,13 @@ public class TribesUserController {
 
   @PostMapping("/register")
   public ResponseEntity<ResponseDto> register(@RequestBody RegistrationRequestDto requestDto) {
-    userService.register(requestDto.toUser(), requestDto.getKingdomName());
+    userService.register(requestDto.toUser(), requestDto.kingdomName());
     return new ResponseEntity<>(new ResponseDto("Registration was successful! You can now log-in at /api/auth/login"), HttpStatus.CREATED);
   }
 
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
-    String token = userService.login(requestDto.getUsername(), requestDto.getPassword());
+    String token = userService.login(requestDto.username(), requestDto.password());
     return new ResponseEntity<>(new LoginResponseDto("Login was successful!", token), HttpStatus.OK);
   }
 }
