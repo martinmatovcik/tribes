@@ -26,7 +26,6 @@ public class Kingdom {
   }
 
   public KingdomDto toDto() {
-    return new KingdomDto(
-        this.id, this.user, this.name, this.troops, this.resources, this.location);
+    return new KingdomDto(this.name, this.user.toDto(), this.troops, this.resources, this.location);
   }
 }

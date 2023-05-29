@@ -1,5 +1,6 @@
 package com.mmatovcik.tribes.models;
 
+import com.mmatovcik.tribes.dtos.TribesUserDto;
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,8 @@ public class TribesUser implements UserDetails {
   private String username;
 
   private String password;
-  private Role role;
+  
+  private Role role = Role.USER;
 
   public TribesUser(String username, String password) {
     this.username = username;
@@ -42,7 +44,7 @@ public class TribesUser implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role.name()));
+    return List.of(new SimpleGrantedAuthority(this.role.name()));
   }
 
   @Override
@@ -63,5 +65,9 @@ public class TribesUser implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  public TribesUserDto toDto() {
+    return new TribesUserDto(username, role);
   }
 }

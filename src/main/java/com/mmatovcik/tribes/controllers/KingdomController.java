@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class KingdomController {
-  private KingdomService kingdomService;
+  private final KingdomService kingdomService;
 
   @GetMapping("/kingdoms")
   public ResponseEntity<List<KingdomDto>> getAllKingdoms() {
