@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -79,32 +80,21 @@ public class TribesUserServiceTest { //  FIXME
 
     // Then
     assertEquals(username, jwtService.extractUsername(actualToken));
-
   }
 
-  //  @Test
-  //  public void findUserByUsername_successful() {
-  //    // Given
-  //    String username = "username";
-  //    TribesUserInterface expectedUser = new TribesUserInterface(username, "password");
-  //    when(userRepository.findByUsername(username)).thenReturn(Optional.of(expectedUser));
-  //
-  //    // When
-  //    TribesUserInterface actualUser = userService.findUserByUsername(username);
-  //
-  //    // Then
-  //    assertEquals(expectedUser, actualUser);
-  //  }
-  //
-  //  @Test
-  //  public void findUserByUsername_throwsNotFoundException() {
-  //    // Given
-  //
-  //    //When
-  //    Exception exception = assertThrows(NotFoundException.class, () ->
-  // userService.findUserByUsername("username"));
-  //
-  //    //Then
-  //    assertTrue(exception.getMessage().contains("Username does not exists"));
-  //  }
+  @Test
+  public void login_throwsBadCredentialsException() {
+    // Given
+    LoginRequestDto requestDto = new LoginRequestDto("username", "password");
+    when(authenticationManager.authenticate(any())).thenThrow(BadCredentialsException.class);
+
+    // When
+    Exception exception =
+        assertThrows(
+            BadCredentialsException.class,
+            () -> userService.login(requestDto.username(), requestDto.password()));
+
+    // Then
+    assertTrue(exception.getMessage().contains("Username or password is not valid."));
+  }
 }
