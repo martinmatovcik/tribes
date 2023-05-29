@@ -19,12 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootTest
 public class KingdomServiceTest {
 
-  static final Integer GAME_BOARD_SIZE = 200;
-  @Autowired KingdomServiceImpl kingdomService;
+  @Autowired
+  KingdomService kingdomService;
+
   @MockBean KingdomRepository kingdomRepository;
-  @MockBean JwtServiceImpl jwtService;
-  @MockBean TribesUserServiceImpl userService;
-//  @MockBean JwtAuthFilter jwtAuthFilter;
+  @MockBean JwtService jwtService;
+  @MockBean TribesUserService userService;
   @MockBean PasswordEncoder passwordEncoder;
   @MockBean TribesUserRepository userRepository;
 
