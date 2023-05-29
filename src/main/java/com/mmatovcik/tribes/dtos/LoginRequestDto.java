@@ -9,7 +9,10 @@ public record LoginRequestDto(
     @NotBlank(message = "Username can not be empty") String username,
     @NotBlank(message = "Password can not be empty")
         @Pattern(message = "Password needs to be at least 8 characters long.", regexp = ".{8,}$")
-        String password) {
+        String password)
+    implements TribesUserInterface {
+
+  @Override
   public TribesUser toUser() {
     return new TribesUser(username, password, Role.USER);
   }

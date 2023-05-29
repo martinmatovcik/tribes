@@ -10,7 +10,9 @@ public record RegistrationRequestDto(
     @NotBlank(message = "Password can not be empty")
         @Pattern(message = "Password needs to be at least 8 characters long.", regexp = ".{8,}$")
         String password,
-    @NotBlank(message = "Name of the kingdom can not be empty") String kingdomName) {
+    @NotBlank(message = "Name of the kingdom can not be empty") String kingdomName)
+    implements TribesUserInterface {
+  @Override
   public TribesUser toUser() {
     return new TribesUser(username, password, Role.USER);
   }
